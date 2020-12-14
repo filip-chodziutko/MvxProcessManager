@@ -1,22 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MvvmCross.Binding.Bindings.Target.Construction;
+﻿using System.Diagnostics;
+using MvvmCross.Commands;
 using MvvmCross.ViewModels;
 
 namespace MvxProcessManager.Core.ViewModels
 {
     public class ProcessManagerViewModel : MvxViewModel
     {
-        private string _name;
-
-        public string Name
+        public ProcessManagerViewModel()
         {
-            get => _name;
+            RefreshCommand = new MvxCommand(Refresh);
+            Refresh();
+        }
+
+        public IMvxCommand RefreshCommand { get; set; }
+
+        private double _refreshFrequency = 1.0; // seconds
+        private Process[] _processes;
+        private Process _selectedProcess;
+        private bool _doRefresh;
+
+        public void Refresh()
+        {
+            Processes = Process.GetProcesses();
+        }
+
+        public double RefreshFrequency
+        {
+            get => _refreshFrequency;
             set
             {
-                SetProperty(ref _name, value);
+                SetProperty(ref _refreshFrequency, value);
             }
         }
+
+        public Process[] Processes
+        {
+            get => _processes;
+            set
+            {
+                SetProperty(ref _processes, value);
+            }
+        }
+
+        public Process SelectedProcess
+        {
+            get => _selectedProcess;
+            set
+            {
+                SetProperty(ref _selectedProcess, value);
+            }
+        }
+
+        public bool DoRefresh
+        {
+            get => _doRefresh;
+            set
+            {
+                SetProperty(ref _doRefresh, value);
+            }
+        }
+
+
     }
 }
