@@ -1,0 +1,135 @@
+﻿<views:MvxWpfView 
+    xmlns:views="clr-namespace:MvvmCross.Platforms.Wpf.Views;assembly=MvvmCross.Platforms.Wpf"
+    xmlns:mvx="clr-namespace:MvvmCross.Platforms.Wpf.Binding;assembly=MvvmCross.Platforms.Wpf"
+    x:Class="MvxProcessManager.Wpf.Views.ProcessManagerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MvxProcessManager.Wpf.Views"
+             mc:Ignorable="d" FontSize="20"
+             d:DesignHeight="720" d:DesignWidth="1280">
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.15*"/>
+                <RowDefinition Height="0.15*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Row="0">
+                <Label Content="Lista procesów" FontSize="28" HorizontalAlignment="Center" VerticalContentAlignment="Center"/>
+            </Grid>
+            <GridSplitter Width="2"/>
+            <Grid Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.2*"/>
+                    <ColumnDefinition Width="1.0*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Wyszukaj:"  HorizontalAlignment="Center" VerticalContentAlignment="Center"/>
+                <TextBox Grid.Column="1" Text="{Binding ProcessNameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0, 5, 10, 5"/>
+            </Grid>
+
+            <Grid Row="2">
+                <DataGrid ItemsSource="{Binding Processes}"  SelectedItem="{Binding SelectedProcess, Mode=TwoWay}"
+                          AutoGenerateColumns="False" Margin="10" IsReadOnly="True" SelectionMode="Single" AlternationCount="{Binding Processes.Count}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nazwa" Width="0.8*" Binding="{Binding ProcessName}"/>
+                        <DataGridTextColumn Header="PID" Width="0.2*" Binding="{Binding Id}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <Grid Grid.Row="3">
+                <Button mvx:Bi.nd="Command RefreshCommand" Margin="20, 10, 20, 10">Odśwież listę</Button>
+                <Separator VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="5, 0, 5, 0"/>
+            </Grid>
+
+            <Grid Grid.Row="4" Margin="10, 5, 10, 5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.7*" />
+                    <RowDefinition Height="1.0*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.05*"/>
+                        <ColumnDefinition Width="0.9*"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Grid.Column="0" IsChecked="{Binding DoRefresh}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding RefreshFrequency, StringFormat=Odświeżaj automatycznie co {0:#,0.##}s}" FontSize="20"  VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Grid>
+                <Slider Grid.Row="1" Value="{Binding RefreshFrequency, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0.01" Maximum="5"  TickFrequency="0.01" IsSnapToTickEnabled="True" Margin="0,5,0,0"/>
+            </Grid>
+
+        </Grid>
+
+
+        <GridSplitter Width="2" IsEnabled="True"/>
+
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="0.4*"/>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="0.5*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.75*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Wybrany proces:" FontSize="28" TextAlignment="Right" VerticalAlignment="Center" Margin="5"/>
+                <TextBlock Grid.Column="1" Text="{Binding SelectedProcess.ProcessName}" FontSize="28" TextAlignment="Left" VerticalAlignment="Center" Margin="5" />
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                     <ColumnDefinition Width="0.75*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="PID:"  TextAlignment="Right" VerticalAlignment="Center" Margin="5"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedProcess.Id}" TextAlignment="Left" VerticalAlignment="Center" Margin="5" />
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Priorytet:"  TextAlignment="Right" VerticalAlignment="Center" Margin="5"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedProcess.PriorityClass}" TextAlignment="Left" VerticalAlignment="Center" Margin="5" />
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Liczba wątków:"  TextAlignment="Right" VerticalAlignment="Center" Margin="5"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedProcess.Threads.Count}" TextAlignment="Left" VerticalAlignment="Center" Margin="5" />
+
+            </Grid>
+            <GridSplitter Grid.Row="1" Width="2" IsEnabled="True"/>
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+
+                </Grid.RowDefinitions>
+                <Button mvx:Bi.nd="Command KillCommand" Grid.Row="0" Margin="10"> Zabij process</Button>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.75*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Margin="10" Grid.Column="0" ItemsSource="{Binding ProcessPriorities}" SelectedItem="{Binding SelectedProcessPriority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button mvx:Bi.nd="Command ChangePriorityCommand" Grid.Column="1" Margin="10">Zmień priorytet</Button>
+                </Grid>
+                <Button mvx:Bi.nd="Command KeepAliveCommand" Grid.Row="2" Margin="10">Podtrzymuj</Button>
+            </Grid>
+            
+
+        </Grid>
+    </Grid>
+</views:MvxWpfView>
