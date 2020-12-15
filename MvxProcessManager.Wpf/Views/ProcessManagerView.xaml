@@ -17,32 +17,41 @@
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.1*"/>
-                <RowDefinition Height="0.70*"/>
                 <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.15*"/>
                 <RowDefinition Height="0.15*"/>
             </Grid.RowDefinitions>
 
             <Grid Row="0">
                 <Label Content="Lista procesów" FontSize="28" HorizontalAlignment="Center" VerticalContentAlignment="Center"/>
             </Grid>
-
+            <GridSplitter Width="2"/>
             <Grid Row="1">
-                <ListView ItemsSource="{Binding Processes}" SelectedItem="{Binding SelectedProcess, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="False" Margin="10">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Nazwa" Width="480" DisplayMemberBinding="{Binding ProcessName}" />
-                            <GridViewColumn Header="PID" Width="110" DisplayMemberBinding="{Binding Id}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.2*"/>
+                    <ColumnDefinition Width="1.0*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="Wyszukaj:"  HorizontalAlignment="Center" VerticalContentAlignment="Center"/>
+                <TextBox Grid.Column="1" Text="{Binding ProcessNameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0, 5, 10, 5"/>
             </Grid>
 
-            <Grid Grid.Row="2">
+            <Grid Row="2">
+                <DataGrid ItemsSource="{Binding Processes}" SelectedItem="{Binding SelectedProcess, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          AutoGenerateColumns="False" Margin="10" IsReadOnly="True" SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Nazwa" Width="0.8*" Binding="{Binding ProcessName}"/>
+                        <DataGridTextColumn Header="PID" Width="0.2*" Binding="{Binding Id}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+
+            <Grid Grid.Row="3">
                 <Button mvx:Bi.nd="Command RefreshCommand" Margin="20, 10, 20, 10">Odśwież listę</Button>
                 <Separator VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="5, 0, 5, 0"/>
             </Grid>
 
-            <Grid Grid.Row="3" Margin="10, 5, 10, 5">
+            <Grid Grid.Row="4" Margin="10, 5, 10, 5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.7*" />
                     <RowDefinition Height="1.0*" />
@@ -59,7 +68,11 @@
             </Grid>
 
         </Grid>
+
+
         <GridSplitter Width="2" IsEnabled="True"/>
+
+
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.1*"/>
