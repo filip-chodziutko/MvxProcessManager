@@ -125,7 +125,8 @@
                     </Grid.ColumnDefinitions>
                     <ComboBox Margin="10" Grid.Column="0" ItemsSource="{Binding ProcessPriorities}" SelectedItem="{Binding SelectedProcessPriority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Button mvx:Bi.nd="Command ChangePriorityCommand" Grid.Column="1" Margin="10">Zmień priorytet</Button>
-                </Grid>                
+                </Grid>
+                <Button mvx:Bi.nd="Command KeepAliveCommand" Grid.Row="2" Margin="10">Podtrzymuj</Button>
             </Grid>
             
 
