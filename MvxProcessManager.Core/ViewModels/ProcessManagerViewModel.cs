@@ -26,6 +26,7 @@ namespace MvxProcessManager.Core.ViewModels
         public IMvxCommand KillCommand { get; set; }
         public IMvxCommand ChangePriorityCommand { get; set; }
         public IMvxCommand KeepAliveCommand { get; set; }
+
         public IEnumerable<ProcessPriorityClass> ProcessPriorities => Enum.GetValues(typeof(ProcessPriorityClass)).Cast<ProcessPriorityClass>();
 
         private double _refreshFrequency = 1.0; // seconds
@@ -64,7 +65,7 @@ namespace MvxProcessManager.Core.ViewModels
                 RaisePropertyChanged(() => SelectedProcess);
             }
         }
-
+        
         public void KeepAlive()
         {
             if (SelectedProcess != null)
