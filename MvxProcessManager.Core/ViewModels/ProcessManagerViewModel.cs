@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -19,10 +20,12 @@ namespace MvxProcessManager.Core.ViewModels
 
         public IMvxCommand RefreshCommand { get; set; }
         public IMvxCommand KillCommand { get; set; }
+        public IEnumerable<ProcessPriorityClass> ProcessPriorities => Enum.GetValues(typeof(ProcessPriorityClass)).Cast<ProcessPriorityClass>();
 
         private double _refreshFrequency = 1.0; // seconds
         private List<Process> _processes;
         private Process _selectedProcess;
+        private ProcessPriorityClass _selectedProcessPriority = ProcessPriorityClass.Normal;
         private bool _doRefresh;
         private string _processNameFilter = "";
 
@@ -40,6 +43,12 @@ namespace MvxProcessManager.Core.ViewModels
             Refresh();
         }
 
+
+        public ProcessPriorityClass SelectedProcessPriority
+        {
+            get => _selectedProcessPriority;
+            set => SetProperty(ref _selectedProcessPriority, value);
+        }
         public string ProcessNameFilter
         {
             get => _processNameFilter;
@@ -49,25 +58,21 @@ namespace MvxProcessManager.Core.ViewModels
                 Refresh();
             }
         }
-
         public double RefreshFrequency
         {
             get => _refreshFrequency;
             set => SetProperty(ref _refreshFrequency, value);
         }
-
         public List<Process> Processes
         {
             get => _processes;
             set => SetProperty(ref _processes, value);
         }
-
         public Process SelectedProcess
         {
             get => _selectedProcess;
             set => SetProperty(ref _selectedProcess, value);
         }
-
         public bool DoRefresh
         {
             get => _doRefresh;

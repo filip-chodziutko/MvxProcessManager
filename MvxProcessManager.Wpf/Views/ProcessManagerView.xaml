@@ -38,11 +38,19 @@
 
             <Grid Row="2">
                 <DataGrid ItemsSource="{Binding Processes}" SelectedItem="{Binding SelectedProcess, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          AutoGenerateColumns="False" Margin="10" IsReadOnly="True" SelectionMode="Single">
+                          AutoGenerateColumns="False" Margin="10" IsReadOnly="True" SelectionMode="Single" AlternationCount="{Binding Processes.Count}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Nazwa" Width="0.8*" Binding="{Binding ProcessName}"/>
                         <DataGridTextColumn Header="PID" Width="0.2*" Binding="{Binding Id}" />
                     </DataGrid.Columns>
+                    <!--<DataGrid.RowDetailsTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="20,10">
+                                <TextBlock Margin="20" Text="Here are the details for the selected mountain:"/>
+                                <TextBlock Text="{Binding Threads.Count}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGrid.RowDetailsTemplate>-->
                 </DataGrid>
             </Grid>
 
@@ -80,25 +88,33 @@
                 <RowDefinition Height="0.3*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <Label Content="Wybrany proces" FontSize="28" HorizontalAlignment="Center" VerticalContentAlignment="Center"></Label>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.75*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Wybrany proces:" FontSize="28" TextAlignment="Right" VerticalAlignment="Center" Margin="5"/>
+                <TextBlock Grid.Column="1" Text="{Binding SelectedProcess.ProcessName}" FontSize="28" TextAlignment="Left" VerticalAlignment="Center" Margin="5" />
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="0.1*"/>
-                    <RowDefinition Height="0.1*"/>
-                    <RowDefinition Height="0.1*"/>
-                    <RowDefinition Height="0.1*"/>
-                    <RowDefinition Height="0.1*"/>
-                    <RowDefinition Height="0.1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.2*"/>
-                    <ColumnDefinition Width="0.8*"/>
-                </Grid.ColumnDefinitions>
+                <DataGrid Grid.Row="0" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="PID" Width="1*" />
+                        <DataGridTextColumn Header="Liczba wątków" Width="Auto" />
+                    </DataGrid.Columns>
+                    <!--<DataGrid.Items>
+                        --><!--<DataGridRow>--><!--
+                        <RowDefinition DataContext="{Binding SelectedProcess}"/>
+                    </DataGrid.Items>-->
+                </DataGrid>
 
-                <Label Grid.Column="0" Grid.Row="0" Content="Nazwa:"/>
             </Grid>
-            <Grid Grid.Row="2"></Grid>
+            <Grid Grid.Row="2">
+                <ComboBox ItemsSource="{Binding ProcessPriorities}" SelectedItem="{Binding SelectedProcessPriority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
             
 
         </Grid>
