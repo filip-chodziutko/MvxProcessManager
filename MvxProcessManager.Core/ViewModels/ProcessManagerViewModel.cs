@@ -17,6 +17,7 @@ namespace MvxProcessManager.Core.ViewModels
             RefreshCommand = new MvxCommand(Refresh);
             KillCommand = new MvxCommand(Kill);
             ChangePriorityCommand = new MvxCommand(ChangePriority);
+            KeepAliveCommand = new MvxCommand(KeepAlive);
 
             Processes = new MvxObservableCollection<Process>(Process.GetProcesses());
         }
@@ -24,6 +25,7 @@ namespace MvxProcessManager.Core.ViewModels
         public IMvxCommand RefreshCommand { get; set; }
         public IMvxCommand KillCommand { get; set; }
         public IMvxCommand ChangePriorityCommand { get; set; }
+        public IMvxCommand KeepAliveCommand { get; set; }
         public IEnumerable<ProcessPriorityClass> ProcessPriorities => Enum.GetValues(typeof(ProcessPriorityClass)).Cast<ProcessPriorityClass>();
 
         private double _refreshFrequency = 1.0; // seconds
@@ -60,6 +62,24 @@ namespace MvxProcessManager.Core.ViewModels
             {
                 SelectedProcess.PriorityClass = SelectedProcessPriority;
                 RaisePropertyChanged(() => SelectedProcess);
+            }
+        }
+
+        public void KeepAlive()
+        {
+            if (SelectedProcess != null)
+            {
+                Task keepAliveTask = new Task(() =>
+                {
+                    var process = SelectedProcess;
+                    var fileName = process.MainModule.FileName;
+                    while (true)
+                    {
+                        process.WaitForExit();
+                        process.Start();
+                    }
+                });
+                keepAliveTask.Start();
             }
         }
 
